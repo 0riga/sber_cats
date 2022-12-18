@@ -1,0 +1,17 @@
+.btn {
+  /* положение элемента */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* size элемента */
+  border-radius: 10px;
+  padding: 6px 10px; 
+  /* em rem */
+  font-size: 18px;
+  gap: 10px;
+  /* красота элемента */
+  border: none;
+  background-color: var(--bg-secondary-color);
+  color: var(--text-light-color);
+  cursor: pointer;
+}
