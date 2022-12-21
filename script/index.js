@@ -10,7 +10,8 @@ const formCatAdd = document.querySelector('#popup-form-cat');
 const formLogin = document.querySelector('#popup-form-login');
 const formCatEdit = document.querySelector('#popup-edit-form-cat');
 let btnCatEdit = document.querySelectorAll('.card__name');
-
+const btnCatDel = document.querySelector('.del')
+console.log(btnCatDel);
 
 const popupAddCat = new Popup('popup-add-cats');
 popupAddCat.setEventListener();
@@ -151,10 +152,32 @@ function handleFormEditCat(e) {
 	api.updateCatById(dataFromForm.id, dataFromForm).then(() => {
 		updateLocalStorage(dataFromForm, { type: 'EDIT_CAT' });
 	});
+
 	// localStorage.setItem('cats', JSON.stringify(dataFromForm));
 	popupEditCat.close();
 	
 }
+
+function handleFormDeleteCat(e) {
+	e.preventDefault();
+	const elementsFormCat = [...formCatEdit.elements];
+	const dataFromForm = serializeForm(elementsFormCat);
+	// console.log(dataFromForm.id);
+	// let a = document.querySelector(`[index="${dataFromForm.id}"]`)
+	// a.remove();
+	api.deleteCatById(dataFromForm.id).then(() => {
+		updateLocalStorage(dataFromForm, { type: 'DELETE_CAT' });
+	})
+	.then(() =>(
+		document.querySelector(`[index="${dataFromForm.id}"]`).remove()
+	));
+	
+	// localStorage.setItem('cats', JSON.stringify(dataFromForm));
+	popupEditCat.close();
+
+	
+}
+
 
 function openPopupEditCat() {
 	btnCatEdit = document.querySelectorAll('.card__name')
@@ -172,7 +195,7 @@ formCatAdd.addEventListener('submit', handleFormAddCat);
 formLogin.addEventListener('submit', handleFormLogin);
 formCatEdit.addEventListener('submit', handleFormEditCat);
 
-
+btnCatDel.addEventListener('click', handleFormDeleteCat)
 
 // btnCatEdit = document.querySelectorAll('.card__name');
 // console.log(btnCatEdit);

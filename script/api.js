@@ -45,7 +45,7 @@ class Api {
 	}
 
 	deleteCatById(idCat) {
-		fetch(`${this._url}/delete/${idCat}`, {
+		return fetch(`${this._url}/delete/${idCat}`, {
 			method: 'DELETE',
 		}).then(this._onResponse);
 	}
