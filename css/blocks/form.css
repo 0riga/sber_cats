@@ -6,7 +6,7 @@
 
 .form__image {
   grid-row: span 3;
-  background-image: url("https://images.4otaku.org/art/5571762e0e426f6272143608483a42cf.png");
+  background-image: url("/img/addcat.png");
   background-size: cover;
   background-repeat: no-repeat;
 }

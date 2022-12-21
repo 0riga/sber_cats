@@ -8,9 +8,15 @@ const btnOpenPopupForm = document.querySelector('#add');
 const btnOpenPopupLogin = document.querySelector('#login');
 const formCatAdd = document.querySelector('#popup-form-cat');
 const formLogin = document.querySelector('#popup-form-login');
+const formCatEdit = document.querySelector('#popup-edit-form-cat');
+let btnCatEdit = document.querySelectorAll('.card__name');
+
 
 const popupAddCat = new Popup('popup-add-cats');
 popupAddCat.setEventListener();
+// открытие попапа для изменения кота
+const popupEditCat = new Popup('popup-edit-cats');
+popupEditCat.setEventListener();
 
 const popupLogin = new Popup('popup-login');
 popupLogin.setEventListener();
@@ -43,6 +49,7 @@ function handleFormAddCat(e) {
 	const elementsFormCat = [...formCatAdd.elements];
 
 	const dataFromForm = serializeForm(elementsFormCat);
+	console.log(dataFromForm);
 
 	api.addNewCat(dataFromForm).then(() => {
 		createCat(dataFromForm);
@@ -62,6 +69,7 @@ function handleFormLogin(e) {
 
 function checkLocalStorage() {
 	const localData = JSON.parse(localStorage.getItem('cats'));
+	// console.log(localData);
 	const getTimeExpires = localStorage.getItem('catsRefresh');
 
 	const isActual = new Date() < new Date(getTimeExpires);
@@ -71,12 +79,14 @@ function checkLocalStorage() {
 			createCat(catData);
 		});
 	} else {
-		api.getAllCats().then((data) => {
-			data.forEach(function (catData) {
-				createCat(catData);
-			});
-			updateLocalStorage(data, { type: 'ALL_CATS' });
-		});
+		api.getAllCats()
+			.then((data) => {
+				data.forEach(function (catData) {
+					createCat(catData);
+				});
+				updateLocalStorage(data, { type: 'ALL_CATS' });
+			})
+			.then(openPopupEditCat);
 	}
 }
 
@@ -84,6 +94,9 @@ checkLocalStorage();
 
 function updateLocalStorage(data, action) {
 	const oldStorage = JSON.parse(localStorage.getItem('cats'));
+	// {type: "ADD_CAT"} {type: "ALL_CATS"}  {type: "DELETE_CAT"}
+	// console.log(oldStorage);
+	console.log(data.id);
 	switch (action.type) {
 		case 'ADD_CAT':
 			localStorage.setItem('cats', JSON.stringify([...oldStorage, data]));
@@ -98,15 +111,58 @@ function updateLocalStorage(data, action) {
 			return;
 		case 'EDIT_CAT':
 			const updatedLocalStorage = oldStorage.map((cat) =>
-				cat.id === data.id ? data : cat
+			cat.id == data.id ? data : cat
 			);
 			localStorage.setItem('cats', JSON.stringify(updatedLocalStorage));
+			console.log(updatedLocalStorage);
 			return;
 		default:
 			break;
 	}
+
 }
 
+function getCatInfo() {
+	const catCardId = this.closest('.card').getAttribute('index');
+	api.getCatById(catCardId).then((data) => {
+		// 	console.log(data);
+		// console.log(this);
+		// console.log(formCatEdit)
+		// console.log(formCatEdit.children[1]);
+		console.log(data.id);
+		formCatEdit.children[1].value = data.id
+		formCatEdit.children[1].readOnly = true;
+		formCatEdit.children[3].value = data.name
+		formCatEdit.children[2].value = data.age
+		formCatEdit.children[4].value = data.rate
+		formCatEdit.children[5].value = data.description
+		formCatEdit.children[7].value = data.image
+		// console.log(catCardId)
+		popupEditCat.open()
+	});
+}
+
+function handleFormEditCat(e) {
+	e.preventDefault();
+	const elementsFormCat = [...formCatEdit.elements];
+	const dataFromForm = serializeForm(elementsFormCat);
+	console.log(dataFromForm);
+	// updateLocalStorage(dataFromForm, { type: 'EDIT_CAT' });
+	api.updateCatById(dataFromForm.id, dataFromForm).then(() => {
+		updateLocalStorage(dataFromForm, { type: 'EDIT_CAT' });
+	});
+	// localStorage.setItem('cats', JSON.stringify(dataFromForm));
+	popupEditCat.close();
+	
+}
+
+function openPopupEditCat() {
+	btnCatEdit = document.querySelectorAll('.card__name')
+	btnCatEdit.forEach((el) => {
+		el.addEventListener('click', getCatInfo)
+	})
+}
+openPopupEditCat()
 btnOpenPopupForm.addEventListener('click', () => {
 	popupAddCat.open();
 });
@@ -114,3 +170,22 @@ btnOpenPopupLogin.addEventListener('click', () => popupLogin.open());
 
 formCatAdd.addEventListener('submit', handleFormAddCat);
 formLogin.addEventListener('submit', handleFormLogin);
+formCatEdit.addEventListener('submit', handleFormEditCat);
+
+
+
+// btnCatEdit = document.querySelectorAll('.card__name');
+// console.log(btnCatEdit);
+// btnCatEdit.forEach((el) => {
+// 	el.addEventListener('click', getCatInfo)
+
+// })
+
+// const data = 68345640
+// const oldStorage = JSON.parse(localStorage.getItem('cats'));
+// console.log(oldStorage);
+// oldStorage.map((cat) => {
+// 	// cat.id === data ? console.log("ok") : console.log("neok")
+// 	if (cat.id === data)
+// 	console.log(cat);
+// })
