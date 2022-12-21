@@ -6,7 +6,7 @@
 
 .form__image {
   grid-row: span 3;
-  background-image: url(img/addcat.png);
+  background-image: url(https://0riga.github.io/sber_cats/img/addcat.png);
   background-size: cover;
   background-repeat: no-repeat;
 }
