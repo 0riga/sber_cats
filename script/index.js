@@ -125,12 +125,15 @@ function updateLocalStorage(data, action) {
 
 function getCatInfo() {
 	const catCardId = this.closest('.card').getAttribute('index');
+	const checkBox = document.querySelector('.edit__cat')
+	console.log(checkBox);
 	api.getCatById(catCardId).then((data) => {
 		// 	console.log(data);
 		// console.log(this);
 		// console.log(formCatEdit)
 		// console.log(formCatEdit.children[1]);
-		console.log(data.id);
+		console.log(data.favorite);
+		// console.log(formCatEdit.children[6]);
 		formCatEdit.children[1].value = data.id
 		formCatEdit.children[1].readOnly = true;
 		formCatEdit.children[3].value = data.name
@@ -138,8 +141,14 @@ function getCatInfo() {
 		formCatEdit.children[4].value = data.rate
 		formCatEdit.children[5].value = data.description
 		formCatEdit.children[7].value = data.image
+		data.favorite === true ? checkBox.checked = true : checkBox.checked = false;
+		// data.favorite === true ? checkBox.setAttribute("checked", "checked") : checkBox.unchecked;
 		// console.log(catCardId)
+		
 		popupEditCat.open()
+		// data.favorite === true ? checkBox.checked = true : checkBox.checked = false;
+		console.log(checkBox);
+		// checkBox.checked = true;
 	});
 }
 
@@ -148,7 +157,6 @@ function handleFormEditCat(e) {
 	const elementsFormCat = [...formCatEdit.elements];
 	const dataFromForm = serializeForm(elementsFormCat);
 	console.log(dataFromForm);
-	// updateLocalStorage(dataFromForm, { type: 'EDIT_CAT' });
 	api.updateCatById(dataFromForm.id, dataFromForm).then(() => {
 		updateLocalStorage(dataFromForm, { type: 'EDIT_CAT' });
 	});

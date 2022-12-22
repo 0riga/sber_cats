@@ -16,7 +16,10 @@ export class Card {
 		cardTitle.textContent = this._data.name;
 		cardImage.src = this._data.image;
 		this.element.setAttribute("index", this._data.id)
-
-		return this.element;
-	}
-};
+		const cardLike = this.element.querySelector(".card__like");
+		if ((this._data.favourite === false) || (this._data.favorite === false)) {
+			cardLike.remove()
+		}
+			return this.element;
+		}
+	};
