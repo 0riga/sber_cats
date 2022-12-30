@@ -18,7 +18,7 @@ export class Card {
 		this.element.setAttribute("index", this._data.id)
 		const cardLike = this.element.querySelector(".card__like");
 		if ((this._data.favourite === false) || (this._data.favorite === false)) {
-			cardLike.remove()
+			cardLike.classList.add('unliked')
 		}
 			return this.element;
 		}

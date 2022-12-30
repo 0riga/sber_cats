@@ -62,17 +62,17 @@
       <h2>Изменить питомца</h2>
       <form class="form" id="popup-edit-form-cat">
         <div class="form__image"></div>
-        <input type="number" class="form__input" name="id" min="1" required placeholder="id">
-        <input type="number" class="form__input" name="age" placeholder="Возраст">
-        <input type="text" class="form__input" name="name" required placeholder="Имя">
-        <input type="number" class="form__input" name="rate" placeholder="Рейтинг (0-10)" min="0" max="10">
-        <textarea name="description" class="form__input form__textarea" placeholder="Описание"></textarea>
+        <input type="number" id="edit-form-cat__id" class="form__input" name="id" min="1" required placeholder="id">
+        <input type="number" id="edit-form-cat__age" class="form__input" name="age" placeholder="Возраст">
+        <input type="text" id="edit-form-cat__name" class="form__input" name="name" required placeholder="Имя">
+        <input type="number" id="edit-form-cat__rate" class="form__input" name="rate" placeholder="Рейтинг (0-10)" min="0" max="10">
+        <textarea name="description" id="edit-form-cat__desc" class="form__input form__textarea" placeholder="Описание"></textarea>
         <label class="form__checkbox-wrap">
-          <input type="checkbox" name="favorite" class="form__checkbox edit__cat">
+          <input type="checkbox" id="edit-form-cat__checkbox" name="favorite" class="form__checkbox edit__cat">
           <span class="form__label">Любимчик</span>
           <span class="form__fake-checkbox"><i class="fa-regular fa-circle-check"></i></span>
         </label>
-        <input type="url" class="form__input form__input_image" name="image" placeholder="Ссылка на фото">
+        <input type="url" id="edit-form-cat__url-image" class="form__input form__input_image" name="image" placeholder="Ссылка на фото">
         <button type="submit" class="form__btn btn">Сохранить изменения</button>
         <button type="button" class="form__btn btn del">Удалить котика</button>
       </form>

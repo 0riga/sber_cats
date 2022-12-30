@@ -41,10 +41,11 @@
   background-image: none;
   color: var(--tertiary-color);
   padding: 0;
-  cursor: pointer;
   z-index: 2;
 }
-
+.card__like.unliked{
+color: var(--text-secondary-color);
+}
 .card::before {
   content: '';
   position: absolute;
