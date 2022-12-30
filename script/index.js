@@ -67,7 +67,7 @@ function handleFormLogin(e) {
 	popupLogin.close();
 }
 
-async function checkLocalStorage() {
+function checkLocalStorage() {
 	const localData = JSON.parse(localStorage.getItem('cats'));
 	const getTimeExpires = localStorage.getItem('catsRefresh');
 
@@ -78,16 +78,16 @@ async function checkLocalStorage() {
 			createCat(catData);
 		});
 	} else {
-		await api.getAllCats()
+		api.getAllCats()
 			.then((data) => {
 				data.forEach(function (catData) {
 					createCat(catData);
 				});
 				updateLocalStorage(data, { type: 'ALL_CATS' });
 			})
-			.catch(err => console.log(err));
+			.catch(err => console.log(err))
+			.then(openPopupEditCat);
 	}
-	openPopupEditCat();
 
 }
 
