@@ -9,7 +9,7 @@ const btnOpenPopupLogin = document.querySelector('#login');
 const formCatAdd = document.querySelector('#popup-form-cat');
 const formLogin = document.querySelector('#popup-form-login');
 const formCatEdit = document.querySelector('#popup-edit-form-cat');
-let btnCatEdit
+let btnCatEdit = document.querySelectorAll('.card__name')
 const btnCatDel = document.querySelector('.del')
 
 const popupAddCat = new Popup('popup-add-cats');
@@ -67,7 +67,7 @@ function handleFormLogin(e) {
 	popupLogin.close();
 }
 
-function checkLocalStorage() {
+async function checkLocalStorage() {
 	const localData = JSON.parse(localStorage.getItem('cats'));
 	const getTimeExpires = localStorage.getItem('catsRefresh');
 
@@ -78,7 +78,7 @@ function checkLocalStorage() {
 			createCat(catData);
 		});
 	} else {
-		api.getAllCats()
+		await api.getAllCats()
 			.then((data) => {
 				data.forEach(function (catData) {
 					createCat(catData);
@@ -87,6 +87,8 @@ function checkLocalStorage() {
 			})
 			.catch(err => console.log(err));
 	}
+	openPopupEditCat();
+
 }
 
 checkLocalStorage();
@@ -190,7 +192,6 @@ formCatAdd.addEventListener('submit', handleFormAddCat);
 formLogin.addEventListener('submit', handleFormLogin);
 formCatEdit.addEventListener('submit', handleFormEditCat);
 btnCatDel.addEventListener('click', handleFormDeleteCat)
-
 function getCookie(name) {
 	const value = `; ${document.cookie}`;
 	const parts = value.split(`; ${name}=`);
